@@ -56,6 +56,9 @@ if __name__ == "__main__":
     parser.add_argument('--generate_ros_models', default=False, dest='generate_ros_models', type=str2bool,
                     help="required if generating the agent for usage with ROS nodes, by default false")
     parser.add_argument('--override_parameters_json_path', default='', help="json file with variables to override jinja parameters")
+    parser.add_argument('--instance', default=0, help="Instance number for multi-vehicle setups")
+    parser.add_argument('--topic_suffix', default="", help="Suffix for topic names to differentiate multiple drone instances")
+
     args = parser.parse_args()
     env = jinja2.Environment(loader=jinja2.FileSystemLoader(args.env_dir))
     template = env.get_template(os.path.relpath(args.filename, args.env_dir))
@@ -89,6 +92,8 @@ if __name__ == "__main__":
          'udp_onboard_gimbal_host_ip': args.udp_onboard_gimbal_host_ip, \
          'udp_onboard_gimbal_port_remote': args.udp_onboard_gimbal_port_remote, \
          'hil_mode': args.hil_mode, \
+         'instance': args.instance,\
+         'topic_suffix': args.topic_suffix, \
          'ros_version': ros_version}
 
     override_params_path = args.override_parameters_json_path
